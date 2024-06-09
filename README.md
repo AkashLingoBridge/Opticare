@@ -70,7 +70,7 @@ A chatbot designed to assist patients with various needs, providing timely and a
    ```
 2. Navigate to the project directory:
    ```bash
-   cd opticare-eye-clinic
+   cd opticare-connect
    ```
 ### Frontend
 
