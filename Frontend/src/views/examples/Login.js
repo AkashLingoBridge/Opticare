@@ -1,25 +1,8 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.4
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2024 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 
 // reactstrap components
 import React, { useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Card,
@@ -33,14 +16,24 @@ import {
   InputGroup,
   Row,
   Col,
+  Label,
 } from "reactstrap";
 
 const Login = () => {
+
+  const [role, setRole] = useState("admin"); // State variable to store selected role
+  const navigate = useNavigate(); // Initialize navigate object using useNavigate hook
+
+  // Function to handle role change from dropdown
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSignIn = async () => {
+    if(role == "admin"){
     try {
       const url = "http://localhost:5001/api/doctors/login"; // Backend API endpoint
       const data = {
@@ -61,6 +54,27 @@ const Login = () => {
       console.log("Wrong Email or Password")
       window.alert("Wrong email or password. Please try again.");
     }
+  }else {
+
+    try{
+    console.log("patint")
+    const response = await axios.get("http://localhost:5001/api/v1/patients/")
+    // const response = axios.get(url)
+    const patients = response.data.data.patients
+    const patientWithEmail = patients.find(patient => patient.email === email);
+    console.log(patientWithEmail.password)
+    if(patientWithEmail.email === password){
+      navigate(`/patient-dashboard/${patientWithEmail._id}`);
+    }else{
+      console.log("Wrong Email or Password")
+      window.alert("Wrong email or password. Please try again.");
+    }
+  }catch(error){
+    console.log("Wrong Email or Password")
+    window.alert("Wrong email or password. Please try again.");
+  }
+
+  }
   };
 
 
@@ -106,6 +120,14 @@ const Login = () => {
                 />
               </InputGroup>
             </FormGroup>
+            <FormGroup>
+                <Label for="roleSelect">Select Role</Label>
+                <Input type="select" name="role" id="roleSelect" value={role} onChange={handleRoleChange}>
+                  <option value="admin">Admin</option>
+                  <option value="patient">Patient</option>
+                  {/*<option value="doctor">Doctor</option>*/}
+                </Input>
+              </FormGroup>
               <div className="custom-control custom-control-alternative custom-checkbox">
                 <input
                   className="custom-control-input"

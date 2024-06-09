@@ -319,64 +319,6 @@ let chartExample1 = {
           ticks: {
             callback: function (value) {
               if (!(value % 10)) {
-                return "$" + value + "k";
-              }
-            },
-          },
-        },
-      ],
-    },
-    tooltips: {
-      callbacks: {
-        label: function (item, data) {
-          var label = data.datasets[item.datasetIndex].label || "";
-          var yLabel = item.yLabel;
-          var content = "";
-
-          if (data.datasets.length > 1) {
-            content += label;
-          }
-
-          content += "$" + yLabel + "k";
-          return content;
-        },
-      },
-    },
-  },
-  data1: (canvas) => {
-    return {
-      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [
-        {
-          label: "Performance",
-          data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
-        },
-      ],
-    };
-  },
-  data2: (canvas) => {
-    return {
-      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [
-        {
-          label: "Performance",
-          data: [0, 20, 5, 25, 10, 30, 15, 40, 40],
-        },
-      ],
-    };
-  },
-};
-
-// Example 2 of Chart inside src/views/Index.js (Total orders - Card)
-let chartExample2 = {
-  options: {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            callback: function (value) {
-              if (!(value % 10)) {
-                //return '$' + value + 'k'
                 return value;
               }
             },
@@ -390,25 +332,126 @@ let chartExample2 = {
           var label = data.datasets[item.datasetIndex].label || "";
           var yLabel = item.yLabel;
           var content = "";
+
           if (data.datasets.length > 1) {
             content += label;
           }
+
           content += yLabel;
           return content;
         },
       },
     },
   },
-  data: {
-    labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: [
-      {
-        label: "Sales",
-        data: [25, 20, 30, 22, 17, 29],
-        maxBarThickness: 10,
-      },
-    ],
+  data1: (canvas) => {
+    return {
+      labels: ["Service 1", "Service 2", "Service 3", "Service 4", "Service 5", "Service 6", "Service 7", "Service 8"],
+      datasets: [
+        {
+          label: "Number of Uses",
+          data: [120, 115, 134, 150, 160, 175, 190, 200], // Sample data
+          backgroundColor: "#11cdef",
+          borderColor: "#11cdef",
+          borderWidth: 2,
+          hoverBackgroundColor: "#11cdef",
+          hoverBorderColor: "#ffffff",
+        },
+      ],
+    };
   },
+};
+
+// Example 2 of Chart inside src/views/Index.js (Total orders - Card)
+let chartExample2 = {
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          callback: function (value) {
+            return value;
+          }
+        }
+      }]
+    },
+    tooltips: {
+      callbacks: {
+        label: function (item, data) {
+          return item.yLabel;
+        }
+      }
+    },
+  },
+  // Dummy data; replace with your actual API data
+  data: {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [{
+      label: "Total Appointments",
+      data: [20, 30, 25, 32, 20, 15, 19, 25, 30, 20, 15, 10],
+      maxBarThickness: 10,
+      backgroundColor: "#fb6340", // Adjust color as needed
+    }],
+  },
+};
+let chartExample3 = {
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          callback: function (value) {
+            return value + "%";
+          }
+        }
+      }]
+    },
+    tooltips: {
+      callbacks: {
+        label: function (item, data) {
+          return item.yLabel ;
+        }
+      }
+    },
+  },
+  data: {
+    labels: ["18-34", "35-49", "50-64", "65+"],
+    datasets: [{
+      label: "Age Distribution",
+      data: [25, 30, 20, 25],
+      backgroundColor: "#5e72e4", // Adjust color as needed
+    }],
+  },
+  
+};
+let chartExample4 = {
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    legend: {
+      position: 'bottom',
+      labels: {
+        fontSize: 14,
+        usePointStyle: true
+      }
+    },
+    tooltips: {
+      callbacks: {
+        label: function(tooltipItem, data) {
+          const dataset = data.datasets[tooltipItem.datasetIndex];
+          const total = dataset.data.reduce((previousValue, currentValue) => previousValue + currentValue);
+          const currentValue = dataset.data[tooltipItem.index];
+          const percentage = Math.floor(((currentValue/total) * 100)+0.5);         
+          return data.labels[tooltipItem.index] + ': ' + percentage + '%';
+        }
+      }
+    }
+  },
+  data: {
+    labels: ["Male", "Female"],
+    datasets: [{
+      data: [300, 250, 50], // Dummy values
+      backgroundColor: ['#5e72e4', '#11cdef', '#2dce89'],
+      hoverBackgroundColor: ['#324cdd', '#0da5c0', '#28b779']
+    }]
+  }
 };
 
 module.exports = {
@@ -416,4 +459,6 @@ module.exports = {
   parseOptions, // used inside src/views/Index.js
   chartExample1, // used inside src/views/Index.js
   chartExample2, // used inside src/views/Index.js
+  chartExample3, // used inside src/views/Index.js  
+  chartExample4, // used inside src/views/Index.js
 };

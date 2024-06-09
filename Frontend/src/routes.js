@@ -16,6 +16,7 @@ import AppProfile from "views/examples/AppointmentCreate";
 // import DoctorCreateProfile from "views/examples/DoctorCreateProfile";
 import DoctorTable from "./views/examples/DoctorTable";
 import DoctorSeeProfile from "views/examples/DoctorSeeProfile";
+import ServiceCreate from "views/examples/ServiceCreate";
 
 var routes = [
   {
@@ -36,50 +37,31 @@ var routes = [
 
 
   
-  {
-    path: "/CreateDoctor",
-    name: "Create Doctor",
-    icon: "ni ni-badge",
-    component: <DoctorCreateProfile />,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/CreateDoctor",
+  //   name: "Create Doctor",
+  //   icon: "ni ni-badge",
+  //   component: <DoctorCreateProfile />,
+  //   layout: "/admin",
+  // },
   {
     path: "/Doctorslist",
-    name: "Doctors List",
+    name: "Doctors",
     icon: "ni ni-badge",
     component: <DoctorTable />,
     layout: "/admin",
   },
-  {
+  { path:"/Appointments",
     name: "Appointment",
     icon: "ni ni-calendar-grid-58",
-    children: [
-      {
-        name: "Create Appointment",
-        path: "/CreateAppointment",
-        icon:"ni ni-bold-right",
-        component: <AppProfile/>,
-        layout: "/admin",
-      },
-     { name: "View Appointments",
-     path:"/Appointments",
-     icon: "ni ni-bold-right",
-     component: <AppTables />,
-     layout: "/admin",},
-    ]
-  },
-  {
-    path: "/Prescription",
-    name: "Prescription",
-    icon: "ni ni-single-copy-04",
-    component: <Tables />,
+    component: <AppTables />,
     layout: "/admin",
   },
   {
-    path: "/Payment",
-    name: "Payment",
+    path: "/Service",
+    name: "Service",
     icon: "ni ni-money-coins",
-    component: <Tables/>,
+    component: <ServiceCreate/>,
     layout: "/admin",
   },
   {
@@ -124,6 +106,22 @@ var routes = [
       component: <DoctorSeeProfile />,  //sheel el arraf da lama te32al we 3adel fe file index.js
       layout: "/admin",
     },
+
+    {
+      path: "/PatientsUpdate",
+      path: "/PatientsUpdate/:Patient_id",
+      component: <PatientCreateProfile type={"Update"} />,
+      layout: "/admin",
+      hidden: true  // Add this property
+    },
+
+      {
+    path: "/CreateDoctor",
+    name: "",
+    icon: "",
+    component: <DoctorCreateProfile />,
+    layout: "/admin",
+  },
  
 ];
 export default routes;

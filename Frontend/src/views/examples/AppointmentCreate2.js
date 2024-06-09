@@ -127,7 +127,6 @@ const AppProfile = () => {
         alert('Please fill all fields');
         return;
       }
-   
    // Check if the entered patient's first and last name exist in the database
    let isPatientValid = false;
    for (let i = 0; i < allPatients.length; i++) {
@@ -149,23 +148,6 @@ const AppProfile = () => {
         month: '2-digit',
         day: '2-digit'
       });
-      const existingAppointmentsResponse = await axios.get('http://localhost:5001/api/v1/appointments');
-      const existingAppointmentsData = existingAppointmentsResponse.data.data;
-      const existingAppointments = existingAppointmentsData.appointments;
-      if (!Array.isArray(existingAppointments)) {
-        console.error('Existing appointments data is not in an array format');
-        return;
-      }
-
-      const conflictingAppointment = existingAppointments.find(Appointment => {
-        return Appointment.serviceId === serviceId && Appointment.time === time && Appointment.date === formattedDate && Appointment.doctorId === doctorId ;
-      });
-
-      if (conflictingAppointment) {
-        // There's a conflicting appointment
-        alert('This time slot is already reserved. Please choose another time.');
-        return;
-      }
   
       // Update state variables with the new data entered by the user
       const appointmentData = {
@@ -225,6 +207,9 @@ const AppProfile = () => {
                     <h3 className="mb-0">{appointmentId ? 'Update Appointment' : 'Create Appointment'}</h3>
                   </Col>
                   <Col className="text-right" xs="4">
+                    <Link to="/admin/CreateAppointment">
+                      <Button color="primary">Back</Button>
+                    </Link>
                   </Col>
                 </Row>
               </CardHeader>
@@ -238,13 +223,13 @@ const AppProfile = () => {
                       <Col lg="6">
                         <FormGroup>
                           <label className="form-control-label" htmlFor="input-patient-id">
-                            Patient Name
+                            Patient ID
                           </label>
                           <Input
                             className="form-control-alternative"
                             value={patientId}
                             onChange={(e) => setPatientId(e.target.value)}
-                            placeholder="Patient Name"
+                            placeholder="Patient ID"
                             type="text"
                             id="input-patient-id"
                           />
